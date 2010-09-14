@@ -46,6 +46,14 @@ class User extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'alphaNumeric' => array(
+				'rule' => array('alphaNumeric'),
+				'message' => 'Password can only contain letters and numbers',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
 		),
 		'supervisor_id' => array(
 //			'numeric' => array(
@@ -108,6 +116,15 @@ class User extends AppModel {
 			)
 		);
 		return $list;
+	}
+	
+	function updateUser($data, $hashOfEmptyStringPassword) {
+		$user = $this->read(null, $data['User']['id']);
+		if($user['User']['password'] == $data['User']['password'] ||
+			$data['User']['password'] == $hashOfEmptyStringPassword) {
+			unset($data['User']['password']);
+		}
+		return $this->save($data);
 	}
 }
 ?>

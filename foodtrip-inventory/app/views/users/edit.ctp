@@ -5,7 +5,7 @@
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('username');
-		echo $this->Form->input('password');
+		echo $this->Form->input('password', array('value'=>'', 'label'=>'Password <a title="No need to input a password if you dont want to change it">?</a>'));
 		if($session->read('Auth.User.user_type') == 'Admin') {
 			echo $this->Form->input('supervisor_id');
 			echo $this->Form->input('user_type', array(
