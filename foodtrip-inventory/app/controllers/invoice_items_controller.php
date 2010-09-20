@@ -3,7 +3,7 @@ class InvoiceItemsController extends AppController {
 
 	var $name = 'InvoiceItems';
 	var $components = array('Auth');
-	var $uses = array('Inventory', 'Invoice', 'InvoiceItem', 'Station');
+	var $uses = array('InvoiceItem', 'Inventory', 'Invoice', 'Station');
 
 	function index() {
 		$this->InvoiceItem->recursive = 0;
@@ -41,9 +41,7 @@ class InvoiceItemsController extends AppController {
 				//-update invoice
 				if($this->Inventory->hasEnoughInventory($stationId, $this->data['InvoiceItem']['product_id'], $this->data['InvoiceItem']['quantity'])) {
 					if ($this->Inventory->sellProduct($this->data, $station, $user)) {
-						debug('product sold');
 						if($this->InvoiceItem->saveInvoiceItem($this->data, $invoice)) {
-							debug('invoice item saved');
 							$this->Session->setFlash(__('Sale has been recorded', true));
 							if($addMore) {
 								$this->redirect(array('controller'=>'invoice_items','action' => 'add', $invoice['Invoice']['id']));
@@ -67,6 +65,10 @@ class InvoiceItemsController extends AppController {
 			$this->set('addMore', $addMore);
 			$this->set('station', $station);
 			$this->set('invoice', $invoice);
+			if(empty($products)) {
+				$this->Session->setFlash(__('Please add products first.', true));
+				$this->redirect(array('controller'=>'invoices','action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name'])));
+			}
 		}
 	}
 

@@ -13,6 +13,5 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Manage Stations', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Logout', true), array('controller'=>'users', 'action'=>'logout')); ?></li>
 	</ul>
 </div>

@@ -80,7 +80,12 @@ class UsersController extends AppController {
 		if (!empty($this->data)) {
 			if ($this->User->updateUser($this->data, $this->Auth->password(''))) {
 				$this->Session->setFlash(__('The user has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				if($this->Auth->user('user_type') == $this->User->userTypes['Admin']) {
+					$this->redirect(array('action' => 'index'));	
+				}
+				else {
+					$this->redirect(array('action' => 'view', $this->Auth->user('id'), Inflector::slug($this->Auth->user('username'))));
+				}
 			} else {
 				$this->Session->setFlash(__('The user could not be saved. Please, try again.', true));
 			}

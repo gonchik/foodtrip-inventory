@@ -56,8 +56,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Back to Stations', true), array('controller' => 'stations', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Back to Station: '.$station['Station']['name'], true), array('controller' => 'stations', 'action' => 'view', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
 		<li><?php echo $this->Html->link(__('Receive Goods', true), array('controller' => 'inventories', 'action' => 'add', $station['Station']['id'], Inflector::slug($station['Station']['name'])));?> </li>
-		<li><?php echo $this->Html->link(__('*List Transactions', true), array('controller' => 'transactions', 'action' => 'index')); ?> </li>
 	</ul>
 </div>

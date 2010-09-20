@@ -2,7 +2,7 @@
 class StationAssignmentsController extends AppController {
 
 	var $name = 'StationAssignments';
-	var $uses = array('Station', 'StationAssignment');
+	var $uses = array('StationAssignment', 'Station');
 	var $components = array('Auth');
 
 	function index() {

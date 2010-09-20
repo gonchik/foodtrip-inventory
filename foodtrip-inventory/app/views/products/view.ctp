@@ -44,7 +44,6 @@
 		<li><?php echo $this->Html->link(__('Manage Products', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Edit Product', true), array('action' => 'edit', $product['Product']['id'], Inflector::slug($product['Product']['name']))); ?> </li>
 		<li><?php echo $this->Html->link(__('Delete Product', true), array('action' => 'delete', $product['Product']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $product['Product']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Logout', true), array('controller'=>'users', 'action'=>'logout')); ?></li>
 	</ul>
 </div>
 <div class="related">

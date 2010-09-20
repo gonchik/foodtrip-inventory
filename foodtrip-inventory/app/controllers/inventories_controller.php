@@ -61,6 +61,10 @@ class InventoriesController extends AppController {
 			$products = $this->Inventory->Product->find('list');
 			$this->set(compact('products'));
 			$this->set('station', $station);
+			if(empty($products)) {
+				$this->Session->setFlash(__('Please add products first.', true));
+				$this->redirect(array('controller'=>'invoices','action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name'])));
+			}
 		}
 	}
 

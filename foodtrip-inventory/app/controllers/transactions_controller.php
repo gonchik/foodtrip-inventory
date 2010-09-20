@@ -2,11 +2,39 @@
 class TransactionsController extends AppController {
 
 	var $name = 'Transactions';
+	var $uses = array('Transaction', 'Inventory', 'Station');
 	var $components = array('Auth');
 
 	function index() {
 		$this->Transaction->recursive = 0;
 		$this->set('transactions', $this->paginate());
+	}
+	
+	function station($stationId = null) {
+		$this->Transaction->recursive = 0;
+		if($stationId == null) {
+			$this->Session->setFlash(__('Invalid station', true));
+			$this->redirect(array('controller'=>'stations','action' => 'index'));
+		}
+		else {
+			$station = $this->Station->getStation($stationId);
+			$inventoryIds = array();
+			$inventories = $this->Transaction->Inventory->find('all',  
+				array(
+					'fields'=>array('Inventory.id'),
+					'conditions'=>array('Inventory.station_id' => $stationId)
+				)
+				
+			);
+			foreach($inventories as $inventory) {
+				array_push($inventoryIds, $inventory['Inventory']['id']);
+			}
+			$this->paginate=array(
+				'conditions'=>array('Transaction.inventory_id'=>$inventoryIds)
+			);
+			$this->set('transactions', $this->paginate());
+			$this->set('station', $station);	
+		}
 	}
 
 	function view($id = null) {

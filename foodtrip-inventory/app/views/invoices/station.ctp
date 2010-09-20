@@ -46,6 +46,7 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Record Sale', true), array('controller' => 'invoice_items', 'action' => 'add', $station['Station']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Back to Station: '.$station['Station']['name'], true), array('controller' => 'stations', 'action' => 'view', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
+		<li><?php echo $this->Html->link(__('Record Sale', true), array('controller' => 'invoice_items', 'action' => 'add', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
 	</ul>
 </div>

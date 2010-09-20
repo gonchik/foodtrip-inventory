@@ -1,6 +1,7 @@
 <?php 
 //TODO: move to controller?
 $isSeller = $session->read('Auth.User.user_type') == 'Seller';
+$isAdmin = $session->read('Auth.User.user_type') == 'Admin';
 ?>
 <div class="stations view">
 <h2><?php  __('Station');?></h2>
@@ -35,12 +36,24 @@ $isSeller = $session->read('Auth.User.user_type') == 'Seller';
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Back to Stations', true), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Manage Assignments', true), array('controller'=>'station_assignments','action' => 'add', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?></li>
-		<li><?php echo $this->Html->link(__('Edit Station', true), array('action' => 'edit', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
-		<li><?php echo $this->Html->link(__('Delete Station', true), array('action' => 'delete', $station['Station']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $station['Station']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('View Station Inventory', true), array('controller' => 'inventories', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
-		<li><?php echo $this->Html->link(__('View Sales', true), array('controller' => 'invoices', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
+		<?php 
+		if($isAdmin) {
+			echo '<li>'.$this->Html->link(__('Back to Stations', true), array('action' => 'index')).'</li>';
+		}
+		else {
+			echo '<li>'.$this->Html->link(__('Back to Main', true), array('controller'=>'pages', 'action' => 'display', 'home')).'</li>';
+		}
+		if(!$isSeller) {
+			echo '<li>'.$this->Html->link(__('Manage Assignments', true), array('controller'=>'station_assignments','action' => 'add', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
+			echo '<li>'.$this->Html->link(__('Edit Station', true), array('action' => 'edit', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
+		}
+		if($isAdmin) {
+			echo '<li>'.$this->Html->link(__('Delete Station', true), array('action' => 'delete', $station['Station']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $station['Station']['id'])).'</li>';
+		}
+		echo '<li>'.$this->Html->link(__('View Station Inventory', true), array('controller' => 'inventories', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
+		echo '<li>'.$this->Html->link(__('View Sales', true), array('controller' => 'invoices', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
+		echo '<li>'.$this->Html->link(__('View Transactions', true), array('controller' => 'transactions', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
+		?>
 	</ul>
 </div>
 <div class="related">
@@ -68,11 +81,11 @@ $isSeller = $session->read('Auth.User.user_type') == 'Seller';
 		
 		<tr<?php echo $class;?>>
 			<td><?php echo $stationAssignment['User']['id'];?></td>
-			<td><?php echo $stationAssignment['User']['username'];?></td>
+			<td><?php echo $this->Html->link($stationAssignment['User']['username'], array('controller' => 'users', 'action' => 'view', $stationAssignment['User']['id'], Inflector::slug($stationAssignment['User']['username']))); ?></td>
 			<td><?php echo $stationAssignment['User']['password'];?></td>
 			<td><?php echo $stationAssignment['User']['created'];?></td>
 			<td><?php echo $stationAssignment['User']['updated'];?></td>
-			<td><?php echo $stationAssignment['User']['supervisor_id'];?></td>
+			<td><?php echo $stationAssignment['User']['supervisor_id']; //TODO: display username and link to user's page ?></td>
 			<td><?php echo $stationAssignment['User']['user_type'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View', true), array('controller' => 'users', 'action' => 'view', $stationAssignment['User']['id'], Inflector::slug($stationAssignment['User']['username']))); ?>

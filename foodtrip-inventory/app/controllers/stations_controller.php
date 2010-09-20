@@ -2,7 +2,7 @@
 class StationsController extends AppController {
 
 	var $name = 'Stations';
-	var $uses = array('Invoice', 'InvoiceItem', 'Station', 'User', 'StationAssignment');
+	var $uses = array('Station', 'Invoice', 'InvoiceItem', 'User', 'StationAssignment');
 	var $components = array('Auth');
 
 	function index() {

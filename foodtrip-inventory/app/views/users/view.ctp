@@ -48,7 +48,6 @@
 			echo '<li>'.$this->Html->link(__('Delete User', true), array('action' => 'delete', $user['User']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $user['User']['id'])).'</li>';	
 		}
 		else {
-			echo '<li>'.$this->Html->link(__('Back to Main', true), array('controller'=>'pages', 'action' => 'display','home')).'</li>';
 			echo '<li>'.$this->Html->link(__('Edit', true), array('action' => 'edit', $user['User']['id'], Inflector::slug($user['User']['username']))).'</li>';
 		}
 		?>
