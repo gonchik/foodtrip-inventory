@@ -40,9 +40,6 @@ $isAdmin = $session->read('Auth.User.user_type') == 'Admin';
 		if($isAdmin) {
 			echo '<li>'.$this->Html->link(__('Back to Stations', true), array('action' => 'index')).'</li>';
 		}
-		else {
-			echo '<li>'.$this->Html->link(__('Back to Main', true), array('controller'=>'pages', 'action' => 'display', 'home')).'</li>';
-		}
 		if(!$isSeller) {
 			echo '<li>'.$this->Html->link(__('Manage Assignments', true), array('controller'=>'station_assignments','action' => 'add', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
 			echo '<li>'.$this->Html->link(__('Edit Station', true), array('action' => 'edit', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
@@ -50,6 +47,7 @@ $isAdmin = $session->read('Auth.User.user_type') == 'Admin';
 		if($isAdmin) {
 			echo '<li>'.$this->Html->link(__('Delete Station', true), array('action' => 'delete', $station['Station']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $station['Station']['id'])).'</li>';
 		}
+		echo '<li>'.$this->Html->link(__('View Price List', true), array('controller' => 'station_prices', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
 		echo '<li>'.$this->Html->link(__('View Station Inventory', true), array('controller' => 'inventories', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
 		echo '<li>'.$this->Html->link(__('View Sales', true), array('controller' => 'invoices', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';
 		echo '<li>'.$this->Html->link(__('View Transactions', true), array('controller' => 'transactions', 'action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))).'</li>';

@@ -1,11 +1,11 @@
-<div class="productsSuppliers form">
-<?php echo $this->Form->create('ProductsSupplier');?>
+<div class="supplierProducts form">
+<?php echo $this->Form->create('SupplierProduct');?>
 	<fieldset>
- 		<legend><?php __('Admin Add Products Supplier'); ?></legend>
+ 		<legend><?php __('Admin Add Supplier Product'); ?></legend>
 	<?php
 		echo $this->Form->input('supplier_id');
 		echo $this->Form->input('product_id');
-		echo $this->Form->input('price');
+		echo $this->Form->input('cost');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit', true));?>
@@ -14,7 +14,7 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('List Products Suppliers', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('List Supplier Products', true), array('action' => 'index'));?></li>
 		<li><?php echo $this->Html->link(__('List Suppliers', true), array('controller' => 'suppliers', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Supplier', true), array('controller' => 'suppliers', 'action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>

@@ -37,7 +37,20 @@ class Station extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'StationPrice' => array(
+			'className' => 'StationPrice',
+			'foreignKey' => 'station_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 	);
 
 	function getStation($id) {
@@ -50,10 +63,17 @@ class Station extends AppModel {
 		return $this->find('all');
 	}
 	
+	function createStation($data) {
+		$this->create();
+		$station = $this->save($data);
+		$this->StationPrice->createStationPrices($this->id);
+		return $station;
+	}
+	
 	function _removeRelationships() {
 		$this->unbindModel(
 			array(
-				'hasMany'=>array('Inventory')
+				'hasMany'=>array('Inventory', 'StationPrice')
 			)
 		);
 	}

@@ -21,8 +21,7 @@ class StationsController extends AppController {
 
 	function add() {
 		if (!empty($this->data)) {
-			$this->Station->create();
-			if ($this->Station->save($this->data)) {
+			if ($this->Station->createStation($this->data)) {
 				$this->Session->setFlash(__('The station has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {

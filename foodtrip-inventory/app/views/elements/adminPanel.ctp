@@ -1,6 +1,9 @@
 <div class="actions">
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
+		<li><?php echo $this->Html->link(__('Manage Reports', true), array('controller'=>'pages', 'action'=>'display', 'reports')); ?></li>
+	</ul>
+	<ul>
 		<li><?php echo $this->Html->link(__('Manage Configurations', true), array('controller'=>'configurations', 'action'=>'index')); ?></li>
 	</ul>
 	<ul>

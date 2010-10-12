@@ -34,7 +34,7 @@
 		<li><?php echo $this->Html->link(__('Manage Suppliers', true), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('Edit Supplier', true), array('action' => 'edit', $supplier['Supplier']['id'], Inflector::slug($supplier['Supplier']['name']))); ?> </li>
 		<li><?php echo $this->Html->link(__('Delete Supplier', true), array('action' => 'delete', $supplier['Supplier']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $supplier['Supplier']['id'])); ?> </li>		
-		<li><?php echo $this->Html->link(__('*List Products', true), array('controller' => 'products', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Products', true), array('controller' => 'supplier_products', 'action' => 'product_list', $supplier['Supplier']['id'], Inflector::slug($supplier['Supplier']['name']))); ?> </li>
 	</ul>
 </div>
 <div class="related">
@@ -77,7 +77,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('*New Product', true), array('controller' => 'products', 'action' => 'add'));?> </li>
+			<li><?php echo $this->Html->link(__('Add Supplier Product', true), array('controller' => 'supplier_products', 'action' => 'add', $supplier['Supplier']['id'], Inflector::slug($supplier['Supplier']['name'])));?> </li>
 		</ul>
 	</div>
 </div>

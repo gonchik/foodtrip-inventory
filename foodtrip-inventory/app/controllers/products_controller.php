@@ -2,7 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
-	var $uses = array('Product', 'User');
+	var $uses = array('Product', 'StationPrice', 'User');
 	var $components = array('Auth');
 
 	function beforeFilter() {
@@ -30,14 +30,13 @@ class ProductsController extends AppController {
 		if (!empty($this->data)) {
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
+				$this->StationPrice->updateStationPrices($this->Product->id);
 				$this->Session->setFlash(__('The product has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
 			}
 		}
-		$suppliers = $this->Product->Supplier->find('list');
-		$this->set(compact('suppliers'));
 	}
 
 	function edit($id = null) {
@@ -47,6 +46,7 @@ class ProductsController extends AppController {
 		}
 		if (!empty($this->data)) {
 			if ($this->Product->save($this->data)) {
+				$this->StationPrice->updateStationPrices($this->Product->id);
 				$this->Session->setFlash(__('The product has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -56,8 +56,6 @@ class ProductsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Product->read(null, $id);
 		}
-		$suppliers = $this->Product->Supplier->find('list');
-		$this->set(compact('suppliers'));
 	}
 
 	function delete($id = null) {

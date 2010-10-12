@@ -2,8 +2,8 @@
 class InvoiceItemsController extends AppController {
 
 	var $name = 'InvoiceItems';
-	var $components = array('Auth');
-	var $uses = array('InvoiceItem', 'Inventory', 'Invoice', 'Station');
+	var $components = array('Auth', 'RequestHandler');
+	var $uses = array('InvoiceItem', 'StationPrice', 'Inventory', 'Invoice', 'Station');
 
 	function index() {
 		$this->InvoiceItem->recursive = 0;
@@ -17,6 +17,19 @@ class InvoiceItemsController extends AppController {
 		}
 		$this->set('invoiceItem', $this->InvoiceItem->read(null, $id));
 	}
+	
+	//TODO: is almost the same as supplier_products controller getDefaultProductCost method
+	function getDefaultStationPricePrice($productId = null, $invoiceId = null) {
+		$invoice = $this->Invoice->findById($invoiceId);
+		$stationPrice = $this->StationPrice->getStationPrice($productId, $invoice['Invoice']['station_id']);
+		if ($this->RequestHandler->isAjax()) {
+		    $this->disableCache();
+		    $this->RequestHandler->setContent('json');
+		    $this->layout = 'ajax';
+		    $this->viewPath = 'ajax';
+		}
+		$this->set('stationPrice', $stationPrice);
+	}
 
 	function add($stationId = null) {
 		if(empty($this->data) && !$stationId) {
@@ -29,7 +42,6 @@ class InvoiceItemsController extends AppController {
 			}
 			$station = $this->Station->getStation($stationId);
 			$invoice = $this->Invoice->getOrGenerateTodaysInvoiceFrom($stationId);
-			
 			$addMore = true;
 			if (!empty($this->data)) {
 				$user = $this->Auth->user();
@@ -44,7 +56,7 @@ class InvoiceItemsController extends AppController {
 						if($this->InvoiceItem->saveInvoiceItem($this->data, $invoice)) {
 							$this->Session->setFlash(__('Sale has been recorded', true));
 							if($addMore) {
-								$this->redirect(array('controller'=>'invoice_items','action' => 'add', $invoice['Invoice']['id']));
+								$this->redirect(array('controller'=>'invoice_items','action' => 'add', $invoice['Invoice']['id'], $station['Station']['id'], Inflector::slug($station['Station']['name'])));
 							}
 							else {
 								$this->redirect(array('controller'=>'invoices','action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name'])));	

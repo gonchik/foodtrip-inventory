@@ -73,6 +73,7 @@ class Invoice extends AppModel {
 			$data['Invoice']['total_net_price'] = 0;
 			$data['Invoice']['total_gross_price'] = 0;
 			$invoice = $this->save($data);
+			$invoice['Invoice']['id'] = $this->id;
 		}
 		return $invoice;
 	}

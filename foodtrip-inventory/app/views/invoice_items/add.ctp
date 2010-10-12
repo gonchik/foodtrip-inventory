@@ -1,5 +1,5 @@
 <div class="invoiceItems form">
-<?php echo $this->Form->create('InvoiceItem');?>
+<?php echo $this->Form->create('InvoiceItem', array('url'=>array('action'=>'add', $station['Station']['id'], Inflector::slug($station['Station']['name']))));?>
 	<fieldset>
  		<legend><?php __('Add Invoice Item'); ?></legend>
 	<?php
@@ -27,3 +27,30 @@ else {
 		<li><?php echo $this->Html->link(__('Back to Invoices', true), array('controller'=>'invoices','action' => 'station', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
 	</ul>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	updateCost();
+	$('#InvoiceItemProductId').bind('change', function() {
+		updateCost();
+	});
+});
+
+function updateCost() {
+	var productId = $('#InvoiceItemProductId').val();
+	var invoiceId = $('#InvoiceItemInvoiceId').val();
+	var submit = $('div.submit > input[type=submit]');
+	submit.attr("disabled", true);
+	$.ajax({
+		url: '<?php echo $this->Html->url(array('action'=>'getDefaultStationPricePrice'))?>/' + productId + '/' + invoiceId,
+		success: function(msg) {
+			setCost(parseFloat(msg));
+			submit.attr("disabled", false);
+		}
+	});
+}
+
+function setCost(cost) {
+	$('#InvoiceItemPrice').val(cost.toFixed(2));
+}
+</script>

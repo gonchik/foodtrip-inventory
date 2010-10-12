@@ -23,7 +23,8 @@ class SuppliersController extends AppController {
 			$this->Session->setFlash(__('Invalid supplier', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->set('supplier', $this->Supplier->read(null, $id));
+		$supplier = $this->Supplier->read(null, $id);
+		$this->set('supplier', $supplier);
 	}
 
 	function add() {

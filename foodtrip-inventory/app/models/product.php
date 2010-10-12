@@ -6,7 +6,7 @@ class Product extends AppModel {
 		'name' => array(
 			'isunique' => array(
 				'rule' => array('isunique'),
-				//'message' => 'Your custom message here',
+				'message' => 'Product name should be unique',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -21,7 +21,7 @@ class Product extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'cost' => array(
+		'unit_cost' => array(
 			'money' => array(
 				'rule' => array('money'),
 				//'message' => 'Your custom message here',
@@ -31,7 +31,7 @@ class Product extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'price' => array(
+		'unit_price' => array(
 			'money' => array(
 				'rule' => array('money'),
 				//'message' => 'Your custom message here',
@@ -59,25 +59,24 @@ class Product extends AppModel {
 			'counterQuery' => ''
 		)
 	);
-
-
-	var $hasAndBelongsToMany = array(
-		'Supplier' => array(
-			'className' => 'Supplier',
-			'joinTable' => 'products_suppliers',
-			'foreignKey' => 'product_id',
-			'associationForeignKey' => 'supplier_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		)
-	);
+	
+	function getProduct($id) {
+		$this->_removeRelationships();
+		return $this->read(null, $id);
+	}
+	
+	function getProducts() {
+		$this->_removeRelationships();
+		return $this->find('all');
+	}
+	
+	function _removeRelationships() {
+		$this->unbindModel(
+			array(
+				'hasMany'=>array('Inventory')
+			)
+		);
+	}
 
 }
 ?>

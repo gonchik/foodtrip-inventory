@@ -19,7 +19,7 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $supplier['Supplier']['id']; ?>&nbsp;</td>
-		<td><?php echo $supplier['Supplier']['name']; ?>&nbsp;</td>
+		<td><?php echo $this->Html->link(__($supplier['Supplier']['name'], true), array('action' => 'view', $supplier['Supplier']['id'])); ?>&nbsp;</td>
 		<td><?php echo $supplier['Supplier']['description']; ?>&nbsp;</td>
 		<td><?php echo $supplier['Supplier']['created']; ?>&nbsp;</td>
 		<td><?php echo $supplier['Supplier']['updated']; ?>&nbsp;</td>

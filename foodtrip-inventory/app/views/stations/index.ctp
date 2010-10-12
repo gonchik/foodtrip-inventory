@@ -19,7 +19,7 @@
 	?>
 	<tr<?php echo $class;?>>
 		<td><?php echo $station['Station']['id']; ?>&nbsp;</td>
-		<td><?php echo $station['Station']['name']; ?>&nbsp;</td>
+		<td><?php echo $this->Html->link(__($station['Station']['name'], true), array('action' => 'view', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?>&nbsp;</td>
 		<td><?php echo $station['Station']['description']; ?>&nbsp;</td>
 		<td><?php echo $station['Station']['created']; ?>&nbsp;</td>
 		<td><?php echo $station['Station']['updated']; ?>&nbsp;</td>

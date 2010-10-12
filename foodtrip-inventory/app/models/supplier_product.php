@@ -1,16 +1,9 @@
 <?php
-class StationAssignment extends AppModel {
-	var $name = 'StationAssignment';
+class SupplierProduct extends AppModel {
+	var $name = 'SupplierProduct';
+	var $displayField = 'product_id';
 	var $validate = array(
-		'station_id' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
-			),
+		'supplier_id' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -19,10 +12,36 @@ class StationAssignment extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
-		),
-		'user_id' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'product_id' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'cost' => array(
+			'money' => array(
+				'rule' => array('money'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -42,62 +61,36 @@ class StationAssignment extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
-		'Station' => array(
-			'className' => 'Station',
-			'foreignKey' => 'station_id',
+		'Supplier' => array(
+			'className' => 'Supplier',
+			'foreignKey' => 'supplier_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
-		'User' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
+		'Product' => array(
+			'className' => 'Product',
+			'foreignKey' => 'product_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		)
 	);
 	
-	function getAssignmentsAt($type='all',$stationId) {
-		if($type == 'list') {
-			return $this->find($type,
-				array(
-					'conditions'=>array('station_id'=>$stationId),
-					'fields'=>array('user_id'),
-				)
-			);	
+	function saveSupplierProduct($data) {
+		$supplierProduct = $this->getSupplierProduct($data['SupplierProduct']['product_id'], $data['SupplierProduct']['supplier_id']);
+		if(!empty($supplierProduct)) {
+			$supplierProduct['SupplierProduct']['cost'] = $data['SupplierProduct']['cost'];
+			return $this->save($supplierProduct);
 		}
-		return $this->find($type,
+		$this->create();
+		return $this->save($data);
+	}
+	
+	function getSupplierProduct($productId, $supplierId) {
+		return $this->find('first', 
 			array(
-				'conditions'=>array('station_id'=>$stationId)
-			)
-		);	
-	}
-	
-	function deleteAssignmentsAt($stationId) {
-		return $this->deleteAll(
-			array('station_id'=>$stationId)
-		);
-	}
-	
-	function addAssignmentsAt($stationId, $userIds) {
-		$data = array();
-		if(!empty($userIds)) {
-			foreach($userIds as $userId) {
-				$assignment = array();
-				$assignment['station_id'] = $stationId;
-				$assignment['user_id'] = $userId;
-				array_push($data, $assignment);
-			}
-			return $this->saveAll($data);
-		}
-		return true;
-	}
-	
-	function getAssignments($userId) {
-		return $this->find('all',
-			array(
-				'conditions'=>array('user_id'=>$userId)
+				'conditions' => array('product_id'=>$productId, 'supplier_id'=>$supplierId)
 			)
 		);
 	}
