@@ -2,7 +2,7 @@
 class ProductsController extends AppController {
 
 	var $name = 'Products';
-	var $uses = array('Product', 'StationPrice', 'User');
+	var $uses = array('Product', 'StationPrice', 'User', 'Configuration');
 	var $components = array('Auth');
 
 	function beforeFilter() {
@@ -27,16 +27,25 @@ class ProductsController extends AppController {
 	}
 
 	function add() {
+		$addMore = true;
 		if (!empty($this->data)) {
+			$addMore = $this->data['Product']['add_more'];
 			$this->Product->create();
 			if ($this->Product->save($this->data)) {
 				$this->StationPrice->updateStationPrices($this->Product->id);
 				$this->Session->setFlash(__('The product has been saved', true));
-				$this->redirect(array('action' => 'index'));
+				if(!$addMore) {
+					$this->redirect(array('action' => 'index'));	
+				}
+				else {
+					$this->redirect(array('action' => 'add'));
+				}
 			} else {
 				$this->Session->setFlash(__('The product could not be saved. Please, try again.', true));
 			}
 		}
+		$this->set('markUp', $this->Configuration->findByName('products.default.markup.rate'));
+		$this->set('addMore', $addMore);
 	}
 
 	function edit($id = null) {

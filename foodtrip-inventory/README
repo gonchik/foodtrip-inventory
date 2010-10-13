@@ -34,11 +34,11 @@ Recommended Reading
 http://astore.amazon.com/cakesoftwaref-20/
 
 STUFF TO DO:
-[?]think of good project/app name
+[*]think of good project/app name
 [/]actions for seller and supervisor
 [/]put in code.google.com
-[ ]adding products to sellers
-[ ]adding sellers to products
+[/]adding products to sellers
+[/]adding sellers to products
 [/]assigning users to stations
 [/]sales
 [/]sales transaction
@@ -48,4 +48,4 @@ STUFF TO DO:
 [ ]purchase orders?
 [/]crud for configurations
 [ ]logging & debugging
-[ ]fix bug with updating user - password gets updated, gets encrypted again
+[/]fix bug with updating user - password gets updated, gets encrypted again

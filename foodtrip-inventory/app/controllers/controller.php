@@ -93,7 +93,7 @@ class Controller extends Object {
  * @access protected
  * @link http://book.cakephp.org/view/961/components-helpers-and-uses
  */
-	var $helpers = array('Session', 'Html', 'Form', 'Javascript', 'Time');
+	var $helpers = array('Session', 'Html', 'Form', 'Js', 'Time');
 
 /**
  * Parameters received in the current request: GET and POST data, information

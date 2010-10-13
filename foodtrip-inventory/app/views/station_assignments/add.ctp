@@ -1,5 +1,5 @@
 <?php 
-$assignUsersJson = $this->Javascript->object($assignedUsers);
+$assignUsersJson = $this->Js->object($assignedUsers);
 ?>
 <div class="stationAssignments form">
 <?php echo $this->Form->create('StationAssignment');?>
@@ -23,12 +23,12 @@ $assignUsersJson = $this->Javascript->object($assignedUsers);
 	</ul>
 </div>
 
-<script type = "text/javascript">
-$(document).ready(function(){
-	var assignedUsers = <?php echo $assignUsersJson; ?>;
+<?php
+$this->Js->buffer("
+	var assignedUsers = " . $assignUsersJson . "
 	for (var id in assignedUsers) {
 		var assignedUser = assignedUsers[id];
 		$('#StationAssignmentUser > option[value='+assignedUser+']').attr('selected', 'selected');
 	}
-});
-</script>
+");
+?>

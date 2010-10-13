@@ -28,29 +28,29 @@ else {
 	</ul>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function(){
+<?php
+$this->Js->buffer("
 	updateCost();
 	$('#InvoiceItemProductId').bind('change', function() {
 		updateCost();
 	});
-});
 
-function updateCost() {
-	var productId = $('#InvoiceItemProductId').val();
-	var invoiceId = $('#InvoiceItemInvoiceId').val();
-	var submit = $('div.submit > input[type=submit]');
-	submit.attr("disabled", true);
-	$.ajax({
-		url: '<?php echo $this->Html->url(array('action'=>'getDefaultStationPricePrice'))?>/' + productId + '/' + invoiceId,
-		success: function(msg) {
-			setCost(parseFloat(msg));
-			submit.attr("disabled", false);
-		}
-	});
-}
+	function updateCost() {
+		var productId = $('#InvoiceItemProductId').val();
+		var invoiceId = $('#InvoiceItemInvoiceId').val();
+		var submit = $('div.submit > input[type=submit]');
+		submit.attr('disabled', true);
+		$.ajax({
+			url: '". $this->Html->url(array('action'=>'getDefaultStationPricePrice')) ."/' + productId + '/' + invoiceId,
+			success: function(msg) {
+				setCost(parseFloat(msg));
+				submit.attr('disabled', false);
+			}
+		});
+	}
 
-function setCost(cost) {
-	$('#InvoiceItemPrice').val(cost.toFixed(2));
-}
-</script>
+	function setCost(cost) {
+		$('#InvoiceItemPrice').val(cost.toFixed(2));
+	}
+");
+?>

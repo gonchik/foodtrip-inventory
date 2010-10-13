@@ -27,28 +27,28 @@ else {
 		<li><?php echo $this->Html->link(__('Back to '.$supplier['Supplier']['name'].' Supplier Products', true), array('action' => 'product_list', $supplier['Supplier']['id'], Inflector::slug($supplier['Supplier']['name'])));?></li>
 	</ul>
 </div>
-<script type="text/javascript">
-$(document).ready(function(){
+<?php
+$this->Js->buffer("
 	updateCost();
 	$('#SupplierProductProductId').bind('change', function() {
 		updateCost();
 	});
-});
-
-function updateCost() {
-	var productId = $('#SupplierProductProductId').val();
-	var submit = $('div.submit > input[type=submit]');
-	submit.attr("disabled", true);
-	$.ajax({
-		url: '<?php echo $this->Html->url(array('action'=>'getDefaultProductCost'))?>/' + productId,
-		success: function(msg) {
-			setCost(parseFloat(msg));
-			submit.attr("disabled", false);
-		}
-	});
-}
-
-function setCost(cost) {
-	$('#SupplierProductCost').val(cost.toFixed(2));
-}
-</script>
+	
+	function updateCost() {
+		var productId = $('#SupplierProductProductId').val();
+		var submit = $('div.submit > input[type=submit]');
+		submit.attr('disabled', true);
+		$.ajax({
+			url: '". $this->Html->url(array('action'=>'getDefaultProductCost')) ."' + productId,
+			success: function(msg) {
+				setCost(parseFloat(msg));
+				submit.attr('disabled', false);
+			}
+		});
+	}
+	
+	function setCost(cost) {
+		$('#SupplierProductCost').val(cost.toFixed(2));
+	}
+");
+?>

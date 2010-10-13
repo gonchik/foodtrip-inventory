@@ -9,10 +9,6 @@
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
-		
-		echo $this->Javascript->link('jquery-1.4.2.min');
-
-		echo $scripts_for_layout;
 	?>
 </head>
 <body>
@@ -41,4 +37,8 @@
 	</div>
 	<?php echo $this->element('sql_dump'); ?>
 </body>
+<?php		
+echo $this->Html->script('jquery-1.4.2.min');
+echo $this->Js->writeBuffer();
+?>
 </html>
