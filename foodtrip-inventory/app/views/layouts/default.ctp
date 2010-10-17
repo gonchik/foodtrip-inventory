@@ -38,7 +38,7 @@
 	<?php echo $this->element('sql_dump'); ?>
 </body>
 <?php		
-echo $this->Html->script('jquery-1.4.2.min');
+echo $this->Html->script('jquery-1.4.3.min');
 echo $this->Js->writeBuffer();
 ?>
 </html>
