@@ -1,4 +1,6 @@
 <?php
+ini_set("include_path", PEAR . PATH_SEPARATOR . ini_get("include_path"));
+
 /**
  * Application level Controller
  *

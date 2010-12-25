@@ -192,6 +192,8 @@ if (!defined('VENDORS')) {
 	define('VENDORS', CAKE_CORE_INCLUDE_PATH.DS.'vendors'.DS);
 }
 
+define('PEAR', VENDORS.'Pear'.DS);
+
 /**
  *  Full url prefix
  */

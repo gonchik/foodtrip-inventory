@@ -81,8 +81,8 @@ class StationAssignment extends AppModel {
 	}
 	
 	function addAssignmentsAt($stationId, $userIds) {
-		$data = array();
 		if(!empty($userIds)) {
+			$data = array();
 			foreach($userIds as $userId) {
 				$assignment = array();
 				$assignment['station_id'] = $stationId;

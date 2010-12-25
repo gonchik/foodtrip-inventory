@@ -1,6 +1,7 @@
 <?php
 class Station extends AppModel {
 	var $name = 'Station';
+	var $actAs = array('Containable');
 	var $displayField = 'name';
 	var $validate = array(
 		'name' => array(
@@ -54,12 +55,14 @@ class Station extends AppModel {
 	);
 
 	function getStation($id) {
-		$this->_removeRelationships();
+		$this->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->contain();
 		return $this->read(null, $id);
 	}
 	
 	function getStations() {
-		$this->_removeRelationships();
+		$this->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->contain();
 		return $this->find('all');
 	}
 	
@@ -68,14 +71,6 @@ class Station extends AppModel {
 		$station = $this->save($data);
 		$this->StationPrice->createStationPrices($this->id);
 		return $station;
-	}
-	
-	function _removeRelationships() {
-		$this->unbindModel(
-			array(
-				'hasMany'=>array('Inventory', 'StationPrice')
-			)
-		);
 	}
 }
 ?>

@@ -46,11 +46,6 @@ class InvoiceItemsController extends AppController {
 			if (!empty($this->data)) {
 				$user = $this->Auth->user();
 				$addMore = $this->data['InvoiceItem']['add_more'];
-				//TODO:
-				//-update inventory
-				//-insert transaction
-				//-insert invoice item
-				//-update invoice
 				if($this->Inventory->hasEnoughInventory($stationId, $this->data['InvoiceItem']['product_id'], $this->data['InvoiceItem']['quantity'])) {
 					if ($this->Inventory->sellProduct($this->data, $station, $user)) {
 						if($this->InvoiceItem->saveInvoiceItem($this->data, $invoice)) {

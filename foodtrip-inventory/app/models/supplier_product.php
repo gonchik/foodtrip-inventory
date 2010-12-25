@@ -1,6 +1,7 @@
 <?php
 class SupplierProduct extends AppModel {
 	var $name = 'SupplierProduct';
+	var $actAs = array('Containable');
 	var $displayField = 'product_id';
 	var $validate = array(
 		'supplier_id' => array(
@@ -91,6 +92,17 @@ class SupplierProduct extends AppModel {
 		return $this->find('first', 
 			array(
 				'conditions' => array('product_id'=>$productId, 'supplier_id'=>$supplierId)
+			)
+		);
+	}
+	
+	function getProducts($supplierId) {
+		return $this->find('all', array(
+				'contain' => false,
+				'fields' => array('product_id'),
+				'conditions' => array(
+					'supplier_id' => $supplierId 
+				)
 			)
 		);
 	}

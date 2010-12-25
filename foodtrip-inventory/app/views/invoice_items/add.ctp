@@ -30,6 +30,7 @@ else {
 
 <?php
 $this->Js->buffer("
+	var submit = $('div.submit > input[type=submit]');
 	updateCost();
 	$('#InvoiceItemProductId').bind('change', function() {
 		updateCost();
@@ -38,7 +39,6 @@ $this->Js->buffer("
 	function updateCost() {
 		var productId = $('#InvoiceItemProductId').val();
 		var invoiceId = $('#InvoiceItemInvoiceId').val();
-		var submit = $('div.submit > input[type=submit]');
 		submit.attr('disabled', true);
 		$.ajax({
 			url: '". $this->Html->url(array('action'=>'getDefaultStationPricePrice')) ."/' + productId + '/' + invoiceId,

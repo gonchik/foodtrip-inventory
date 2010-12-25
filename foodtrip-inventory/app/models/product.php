@@ -1,6 +1,7 @@
 <?php
 class Product extends AppModel {
 	var $name = 'Product';
+	var $actAs = array('Containable');
 	var $displayField = 'name';
 	var $validate = array(
 		'name' => array(
@@ -61,21 +62,15 @@ class Product extends AppModel {
 	);
 	
 	function getProduct($id) {
-		$this->_removeRelationships();
+		$this->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->contain();
 		return $this->read(null, $id);
 	}
 	
 	function getProducts() {
-		$this->_removeRelationships();
+		$this->Behaviors->attach('Containable', array('autoFields' => false));
+		$this->contain();
 		return $this->find('all');
-	}
-	
-	function _removeRelationships() {
-		$this->unbindModel(
-			array(
-				'hasMany'=>array('Inventory')
-			)
-		);
 	}
 
 }

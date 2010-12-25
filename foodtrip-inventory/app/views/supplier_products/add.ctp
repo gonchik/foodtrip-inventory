@@ -39,7 +39,7 @@ $this->Js->buffer("
 		var submit = $('div.submit > input[type=submit]');
 		submit.attr('disabled', true);
 		$.ajax({
-			url: '". $this->Html->url(array('action'=>'getDefaultProductCost')) ."' + productId,
+			url: '". $this->Html->url(array('action'=>'getDefaultProductCost')) ."' + '/' + productId,
 			success: function(msg) {
 				setCost(parseFloat(msg));
 				submit.attr('disabled', false);
@@ -48,7 +48,7 @@ $this->Js->buffer("
 	}
 	
 	function setCost(cost) {
-		$('#SupplierProductCost').val(cost.toFixed(2));
+		$('#SupplierProductCost').val(cost.toFixed(2));	
 	}
 ");
 ?>

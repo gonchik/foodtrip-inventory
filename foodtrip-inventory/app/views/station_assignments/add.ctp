@@ -26,8 +26,8 @@ $assignUsersJson = $this->Js->object($assignedUsers);
 <?php
 $this->Js->buffer("
 	var assignedUsers = " . $assignUsersJson . "
-	for (var id in assignedUsers) {
-		var assignedUser = assignedUsers[id];
+	for (var i in assignedUsers) {
+		var assignedUser = assignedUsers[i];
 		$('#StationAssignmentUser > option[value='+assignedUser+']').attr('selected', 'selected');
 	}
 ");
