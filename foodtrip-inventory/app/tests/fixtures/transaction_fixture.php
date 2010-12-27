@@ -1,16 +1,18 @@
 <?php
-/* Transaction Fixture generated on: 2010-09-04 14:09:04 : 1283608924 */
+/* Transaction Fixture generated on: 2010-12-25 09:12:45 : 1293270705 */
 class TransactionFixture extends CakeTestFixture {
 	var $name = 'Transaction';
 
 	var $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10, 'key' => 'primary'),
 		'inventory_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
+		'station_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 10),
 		'transaction_type' => array('type' => 'text', 'null' => false, 'default' => NULL),
-		'old_cost' => array('type' => 'float', 'null' => false, 'default' => NULL, 'length' => 10),
+		'old_cost' => array('type' => 'float', 'null' => false, 'default' => NULL, 'length' => '12,4'),
 		'old_quantity' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'new_cost' => array('type' => 'float', 'null' => false, 'default' => NULL, 'length' => 10),
+		'new_cost' => array('type' => 'float', 'null' => false, 'default' => NULL, 'length' => '12,4'),
 		'new_quantity' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'remarks' => array('type' => 'text', 'null' => false, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
@@ -24,16 +26,56 @@ class TransactionFixture extends CakeTestFixture {
 		array(
 			'id' => 1,
 			'inventory_id' => 1,
+			'product_id' => 1,
+			'station_id' => 1,
 			'user_id' => 1,
-			'transaction_type' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'old_cost' => 1,
-			'old_quantity' => 1,
-			'new_cost' => 1,
-			'new_quantity' => 1,
-			'remarks' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2010-09-04 14:02:04',
-			'updated' => '2010-09-04 14:02:04',
-			'transaction_number' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.'
+		
+			'transaction_type' => 'GOODS_RECEIVED',
+			'old_cost' => 0,
+			'old_quantity' => 0,
+			'new_cost' => 10,
+			'new_quantity' => 10,
+			'remarks' => 'received',
+			'transaction_number' => 11123545,
+		
+			'created' => '2010-10-11 12:02:42',
+			'updated' => '2010-10-11 12:02:42'
+		),
+		array(
+			'id' => 2,
+			'inventory_id' => 1,
+			'product_id' => 1,
+			'station_id' => 1,
+			'user_id' => 1,
+		
+			'transaction_type' => 'SALES',
+			'old_cost' => 10,
+			'old_quantity' => 10,
+			'new_cost' => 9,
+			'new_quantity' => 9,
+			'remarks' => 'sold',
+			'transaction_number' => 11123545,
+		
+			'created' => '2010-10-11 12:02:42',
+			'updated' => '2010-10-11 12:02:42'
+		),
+		array(
+			'id' => 3,
+			'inventory_id' => 1,
+			'product_id' => 1,
+			'station_id' => 1,
+			'user_id' => 1,
+		
+			'transaction_type' => 'SALES',
+			'old_cost' => 9,
+			'old_quantity' => 9,
+			'new_cost' => 8,
+			'new_quantity' => 8,
+			'remarks' => 'sold',
+			'transaction_number' => 11123545,
+		
+			'created' => '2010-10-11 12:02:42',
+			'updated' => '2010-10-11 12:02:42'
 		),
 	);
 }

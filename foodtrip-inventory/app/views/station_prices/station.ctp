@@ -55,5 +55,6 @@
 	<h3><?php __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('Back to Station: '.$station['Station']['name'], true), array('controller' => 'stations', 'action' => 'view', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
+		<li><?php echo $this->Html->link(__('Print price list', true), array('controller' => 'reports', 'action' => 'pricelist', $station['Station']['id'], Inflector::slug($station['Station']['name']))); ?> </li>
 	</ul>
 </div>

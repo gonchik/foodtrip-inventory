@@ -23,6 +23,14 @@ class StationPriceFixture extends CakeTestFixture {
 			'created' => '2010-10-11 07:43:48',
 			'updated' => '2010-10-11 07:43:48'
 		),
+		array(
+			'id' => 2,
+			'station_id' => 1,
+			'product_id' => 2,
+			'price' => 1,
+			'created' => '2010-10-11 07:43:48',
+			'updated' => '2010-10-11 07:43:48'
+		),
 	);
 }
 ?>

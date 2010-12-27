@@ -60,10 +60,10 @@ class Station extends AppModel {
 		return $this->read(null, $id);
 	}
 	
-	function getStations() {
+	function getStations($type = 'all') {
 		$this->Behaviors->attach('Containable', array('autoFields' => false));
 		$this->contain();
-		return $this->find('all');
+		return $this->find($type);
 	}
 	
 	function createStation($data) {

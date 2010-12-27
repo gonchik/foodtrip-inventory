@@ -2,6 +2,7 @@
 class Transaction extends AppModel {
 	var $name = 'Transaction';
 	var $displayField = 'transaction_number';
+	var $actsAs = array('Containable');
 	var $transactionTypes = array(
 		'SALES'=>'SALES',
 		'GOODS_RECEIVED'=>'GOODS_RECEIVED',
@@ -12,6 +13,42 @@ class Transaction extends AppModel {
 	
 	var $validate = array(
 		'inventory_id' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'product_id' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'numeric' => array(
+				'rule' => array('numeric'),
+				//'message' => 'Your custom message here',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+		),
+		'station_id' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
 				//'message' => 'Your custom message here',
@@ -135,6 +172,20 @@ class Transaction extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
+		'Product' => array(
+			'className' => 'Product',
+			'foreignKey' => 'product_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Station' => array(
+			'className' => 'Station',
+			'foreignKey' => 'station_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 		'User' => array(
 			'className' => 'User',
 			'foreignKey' => 'user_id',
@@ -149,6 +200,8 @@ class Transaction extends AppModel {
 		$transactionNumber = uniqid("GR-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $inventory['Inventory']['id'];
+		$data['Transaction']['product_id'] = $inventory['Inventory']['product_id'];
+		$data['Transaction']['station_id'] = $inventory['Inventory']['station_id'];
 		$data['Transaction']['user_id'] = $user['User']['id'];
 		$data['Transaction']['transaction_type'] = $this->transactionTypes['GOODS_RECEIVED'];
 		$data['Transaction']['old_cost'] = 0;
@@ -165,6 +218,8 @@ class Transaction extends AppModel {
 		$transactionNumber = uniqid("MI-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $newInventory['Inventory']['id'];
+		$data['Transaction']['product_id'] = $inventory['Inventory']['product_id'];
+		$data['Transaction']['station_id'] = $inventory['Inventory']['station_id'];
 		$data['Transaction']['user_id'] = $user['User']['id'];
 		$data['Transaction']['transaction_type'] = $this->transactionTypes['MODIFICATION'];
 		$data['Transaction']['old_cost'] = $oldInventory['Inventory']['cost'];
@@ -181,6 +236,8 @@ class Transaction extends AppModel {
 		$transactionNumber = uniqid("ST-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $inventory['Inventory']['id'];
+		$data['Transaction']['product_id'] = $inventory['Inventory']['product_id'];
+		$data['Transaction']['station_id'] = $inventory['Inventory']['station_id'];
 		$data['Transaction']['user_id'] = $user['User']['id'];
 		$data['Transaction']['transaction_type'] = $this->transactionTypes['SALES'];
 		$data['Transaction']['old_cost'] = $originalCost;
@@ -190,6 +247,74 @@ class Transaction extends AppModel {
 		$data['Transaction']['remarks'] = $remarks;
 		$data['Transaction']['transaction_number'] = $transactionNumber;
 		return $this->save($data);
+	}
+	
+	function getSellerSalesTransaction($sellerId, $startDate, $endDate) {
+		debug(">>");
+		return $this->find('all', 
+			array(
+				'conditions' => array(
+					'Transaction.user_id' => $sellerId,
+					'Transacation.created >= ' => $startDate,
+					'Transacation.created <= ' => $endDate
+				)
+			)
+		);
+	}
+	
+	function fetchSalesTransactions($stationId, $userId, $startDate, $endDate) {
+		$conditions = array(
+			'Transaction.transaction_type' => 'SALES',
+			'Transaction.created >=' => $startDate,
+			'Transaction.created <=' => $endDate
+		);
+		if($stationId != '') {
+			$conditions = array_merge($conditions, array('Transaction.station_id' => $stationId));
+		}
+		if($userId != '') {
+			$conditions = array_merge($conditions, array('Transaction.user_id' => $userId));
+		}
+		
+		return $this->find('all',
+			array(
+				'conditions' => $conditions,
+				'fields' => array(
+					'Transaction.id',
+					'Transaction.inventory_id',
+					'Transaction.product_id',
+					'Transaction.station_id',
+					'Transaction.user_id',
+					'Transaction.transaction_type',
+					'Transaction.created',
+					'SUM(Transaction.old_quantity - Transaction.new_quantity) as quantity_sold'
+				),
+				'group' => array(
+					'Transaction.product_id'
+				),
+				'contain' => array(
+					'Product' => array(
+						'fields' => array(
+							'Product.name'
+						)
+					),
+					'Station' => array(
+						'fields' => array(
+							'Station.name'
+						),
+						'StationPrice' => array(
+							'fields' => array(
+								'StationPrice.price'
+							)
+						)
+					),
+					'User' => array(
+						'fields' => array(
+							'User.username'
+						)
+					)
+				)
+			)
+		);
 	}
 }
 ?>

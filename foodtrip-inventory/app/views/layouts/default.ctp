@@ -9,6 +9,8 @@
 		echo $this->Html->meta('icon');
 
 		echo $this->Html->css('cake.generic');
+		
+		echo $this->Html->css('humanity/jquery-ui-1.8.7.custom');
 	?>
 </head>
 <body>
@@ -38,7 +40,8 @@
 	<?php echo $this->element('sql_dump'); ?>
 </body>
 <?php		
-echo $this->Html->script('jquery-1.4.3.min');
+echo $this->Html->script('jquery-1.4.4.min');
+echo $this->Html->script('jquery-ui-1.8.7.custom.min');
 echo $this->Js->writeBuffer();
 ?>
 </html>
