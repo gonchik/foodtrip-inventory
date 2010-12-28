@@ -112,7 +112,6 @@ class Inventory extends AppModel {
 	);
 
 	function receiveGoods($data, $user) {
-		debug(">>");
 		$this->Product->unbindModel(
 			array(
 				'hasMany'=>array('Inventory'),
@@ -133,7 +132,6 @@ class Inventory extends AppModel {
 	}
 	
 	function modifyInventory($data, $user) {
-		debug(">>");
 		$remarks = $data['Transaction']['remarks'];
 		$oldInventory = $this->read(null, $data['Inventory']['id']);
 		$newInventory = $this->save($data);
@@ -148,7 +146,6 @@ class Inventory extends AppModel {
 	} 
 	
 	function getAvailableInventoriesOrderedByMostRecent($stationId) {
-		debug(">>");
 		return $this->find('all', 
 			array(
 				'conditions'=>array(
@@ -163,7 +160,6 @@ class Inventory extends AppModel {
 	}
 	
 	function getTotalInventoryCount($stationId, $productId) {
-		debug(">>");
 		$result = $this->query("select sum(quantity) as total_quantity from inventories where station_id = ".Sanitize::clean($stationId).' and product_id = '.Sanitize::clean($productId));
 		if(!isset($result[0][0]['total_quantity'])) {
 			$result[0][0]['total_quantity'] = 0;
@@ -172,19 +168,16 @@ class Inventory extends AppModel {
 	}
 	
 	function hasAvailableInventories($stationId, $productId) {
-		debug(">>");
 		$totalQuantity = $this->getTotalInventoryCount($stationId, $productId);
 		return $totalQuantity > 0;
 	}
 	
 	function hasEnoughInventory($stationId, $productId, $requiredQuantity) {
-		debug(">>");
 		$totalQuantity = $this->getTotalInventoryCount($stationId, $productId);
 		return $totalQuantity >= $requiredQuantity;
 	}
 	
 	function sellProduct($data, $station, $user) {
-		debug(">>");
 		//check first if there are available inventory
 		
 		//fetch (unused) inventories

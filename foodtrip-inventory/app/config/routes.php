@@ -31,3 +31,10 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	
+	Router::connect("/invoice_items/record",
+		array("controller" => "invoice_items", "action" => "record", "[method]" => "POST"),
+		array("id" => "")
+	);
+	
+	Router::parseExtensions();

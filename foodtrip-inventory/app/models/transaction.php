@@ -196,7 +196,6 @@ class Transaction extends AppModel {
 	);
 	
 	function logGoodsReceived($inventory, $user) {
-		debug(">>");
 		$transactionNumber = uniqid("GR-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $inventory['Inventory']['id'];
@@ -214,7 +213,6 @@ class Transaction extends AppModel {
 	}
 	
 	function logModifyInventory($oldInventory, $newInventory, $remarks, $user) {
-		debug(">>");
 		$transactionNumber = uniqid("MI-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $newInventory['Inventory']['id'];
@@ -232,7 +230,6 @@ class Transaction extends AppModel {
 	}
 	
 	function logSalesTransaction($inventory, $originalCost, $originalQuantity, $remarks, $user) {
-		debug(">>");
 		$transactionNumber = uniqid("ST-");
 		$data = array();
 		$data['Transaction']['inventory_id'] = $inventory['Inventory']['id'];
@@ -250,7 +247,6 @@ class Transaction extends AppModel {
 	}
 	
 	function getSellerSalesTransaction($sellerId, $startDate, $endDate) {
-		debug(">>");
 		return $this->find('all', 
 			array(
 				'conditions' => array(

@@ -1,11 +1,3 @@
-<?php 
-echo $html->link('seller sales report (today)', array('controller'=>'reports', 'action'=>'seller_sales'));
-?>
-<br>
-<br>
-station sales report (today)
-
-
 <div class="reports form">
 <?php echo $this->Form->create('Report', array('action'=>'seller_sales'));?>
 	<fieldset>

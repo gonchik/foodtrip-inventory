@@ -3,8 +3,52 @@ class InvoiceItemsController extends AppController {
 
 	var $name = 'InvoiceItems';
 	var $components = array('Auth', 'RequestHandler');
-	var $uses = array('InvoiceItem', 'StationPrice', 'Inventory', 'Invoice', 'Station');
+	var $uses = array('InvoiceItem', 'StationPrice', 'Inventory', 'Invoice', 'Station', 'StationAssignment');
 
+	function beforeFilter() {
+		$this->Auth->allow('rest_add');
+   	}
+
+	function record() {
+		$userAssignments = $this->StationAssignment->getAssignments($this->params['form']['user_id']);
+		$message = array();
+		$message['error'] = '';
+		if(empty($userAssignments)) {
+			$message['error'] .= 'User with id `'.$this->params['form']['user_id'].'` is not assigned to any station\n';
+		}
+		else {
+			$userAssignment = $userAssignments[0];
+			$invoice = $this->Invoice->getOrGenerateTodaysInvoiceFrom($userAssignment['Station']['id']);
+			foreach($this->params['form']['items'] as $item) {
+				//TODO: refactor
+				$stationPrice = $this->StationPrice->getStationPrice($item['id'], $userAssignment['Station']['id']);
+				$data = array();
+				$data['InvoiceItem']['invoice_id'] = $invoice['Invoice']['id'];
+				$data['InvoiceItem']['product_id'] = $item['id'];
+				$data['InvoiceItem']['quantity'] = $item['quantity'];
+				$data['InvoiceItem']['remarks'] = $this->params['form']['remarks'];
+				$data['InvoiceItem']['price'] = $stationPrice['StationPrice']['price']; 
+				if($this->Inventory->hasEnoughInventory($userAssignment['Station']['id'], $data['InvoiceItem']['product_id'], $data['InvoiceItem']['quantity'])) {
+					if ($this->Inventory->sellProduct($data, $userAssignment, $userAssignment)) {
+						if($this->InvoiceItem->saveInvoiceItem($data, $invoice)) {
+							//TODO: refactor
+						} else {
+							$message['error'] .= 'The sale could not be saved. Please, try again.2';
+						}
+					} else {
+						$message['error'] .= 'The sale could not be saved. Please, try again.';
+					}
+				}
+				else {
+					$message['error'] .= 'Station does not have enough inventory.';
+				}	
+			}
+		}
+		$message['result'] = ($message['error'] == '')?'success':'failure';
+		
+		$this->set(compact("message"));
+	}
+	
 	function index() {
 		$this->InvoiceItem->recursive = 0;
 		$this->set('invoiceItems', $this->paginate());
@@ -173,5 +217,6 @@ class InvoiceItemsController extends AppController {
 		$this->Session->setFlash(__('Invoice item was not deleted', true));
 		$this->redirect(array('action' => 'index'));
 	}
+	
 }
 ?>
