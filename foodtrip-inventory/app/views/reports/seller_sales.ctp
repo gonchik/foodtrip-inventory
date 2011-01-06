@@ -1,4 +1,3 @@
 <?php 
-	$this->SalesReportGenerator->generate($transactions);
-
+	$this->SalesReportGenerator->generate($headerData, $transactions, $stationPrices);
 ?>

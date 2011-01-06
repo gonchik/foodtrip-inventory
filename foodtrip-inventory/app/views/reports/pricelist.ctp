@@ -1,4 +1,4 @@
 <?php 
-	$this->PricelistGenerator->generate($stationPrices);
+	$this->PricelistGenerator->generate($headerData, $stationPrices);
 
 ?>
