@@ -3,7 +3,7 @@
 class ReportsController extends AppController {
 
 	var $name = 'Reports';
-	var $uses = array('User', 'Transaction', 'Station', 'StationPrice');
+	var $uses = array('User', 'Transaction', 'Station', 'StationPrice', 'StationAssignment');
 	var $helpers = array('Session', 'Html', 'Form', 'Js', 'Time', 'SalesReportGenerator', 'PricelistGenerator');
 
 	function index() {
@@ -18,8 +18,17 @@ class ReportsController extends AppController {
 	}
 	
 	function seller_sales() {
-		$transactions = $this->Transaction->fetchSalesTransactions($this->data['Report']['Station'], $this->data['Report']['User'], $this->data['Report']['StartDate'], $this->data['Report']['EndDate']);
+		$stationId = $this->data['Report']['Station'];
+		$userId = $this->data['Report']['User'];
+		$transactions = $this->Transaction->fetchSalesTransactions($stationId, $userId, $this->data['Report']['StartDate'], $this->data['Report']['EndDate']);
+		if($stationId == '') {
+			$station = $this->StationAssignment->getAssignments($userId, 'first');
+			$stationId = $station['Station']['id'];
+		}
+		$stationPrices = $this->StationPrice->getStationPrices($stationId);
 		$this->set('transactions', $transactions);
+		$this->set('stationPrices', $stationPrices);
+		$this->set('headerData', $this->_getHeaderData($this->data));
 	}
 	
 	function pricelist($stationId = null) {
@@ -29,13 +38,18 @@ class ReportsController extends AppController {
 			$this->redirect(array('controller'=>'stations','action' => 'index'));
 		}
 		else {
-			$station = $this->Station->getStation($stationId);
-			$stationPrices = $this->StationPrice->find('all', array(
-				'conditions'=>array('StationPrice.station_id'=>$stationId)
-			));
+			$stationPrices = $this->StationPrice->getStationPrices($stationId);
 			$this->set('stationPrices', $stationPrices);
+			$this->set('headerData', $this->_getHeaderData($this->data));
 		}
 	}
 	
+	function _getHeaderData($data) {
+		$headerData = array();
+		$headerData['Report']['CompanyName'] = 'BusinessTeam'; 
+		$headerData['Report']['StartDate'] = $data['Report']['StartDate'];
+		$headerData['Report']['EndDate'] = $data['Report']['EndDate'];
+		return $headerData;
+	}
 }
 ?>

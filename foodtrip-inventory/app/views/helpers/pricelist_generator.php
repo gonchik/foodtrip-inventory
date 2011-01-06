@@ -11,7 +11,7 @@ class PricelistGeneratorHelper extends AppHelper {
 	 */
 	var $helpers = array('Number', 'Time');
 	
-	function generate($stationPrices) {
+	function generate($headerData, $stationPrices) {
 		// Set up the header array
 		$titles = array(
 			'Product' => 20,
@@ -40,7 +40,7 @@ class PricelistGeneratorHelper extends AppHelper {
 		$formatText =& $xlsBook->addFormat(array('Size' => 11));
 		
 		$cn = 0;
-		$xls->write($rn, 0, "COMPANY NAME", $main);
+		$xls->write($rn, 0, $headerData['Report']['CompanyName'], $main);
 		$xls->mergeCells($rn,0,$rn,count($titles) - 1);
 		$rn++;
 		$xls->write($rn, 0, "PRICE LIST", $main);

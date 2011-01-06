@@ -261,9 +261,8 @@ class Transaction extends AppModel {
 	function fetchSalesTransactions($stationId, $userId, $startDate, $endDate) {
 		$conditions = array(
 			'Transaction.transaction_type' => 'SALES',
-			'Transaction.created >=' => $startDate,
-			'Transaction.created <=' => $endDate,
-//			'Transaction.product_id ' => 'StationPrice.product_id'
+			'Transaction.created >=' => $startDate.' 00:00:00',
+			'Transaction.created <=' => $endDate.' 00:00:00',
 		);
 		if($stationId != '') {
 			$conditions = array_merge($conditions, array('Transaction.station_id' => $stationId));
@@ -292,17 +291,6 @@ class Transaction extends AppModel {
 					'Product' => array(
 						'fields' => array(
 							'Product.name'
-						)
-					),
-					'Station' => array(
-						'fields' => array(
-							'Station.name'
-						),
-						'StationPrice' => array(
-							'fields' => array(
-								'StationPrice.price',
-//								'StationPrice.product_id'
-							)
 						)
 					),
 					'User' => array(

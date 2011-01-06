@@ -94,8 +94,8 @@ class StationAssignment extends AppModel {
 		return true;
 	}
 	
-	function getAssignments($userId) {
-		return $this->find('all',
+	function getAssignments($userId, $type = 'all') {
+		return $this->find($type,
 			array(
 				'conditions'=>array('user_id'=>$userId)
 			)

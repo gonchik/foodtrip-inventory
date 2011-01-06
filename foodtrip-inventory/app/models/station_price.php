@@ -104,5 +104,13 @@ class StationPrice extends AppModel {
 			)
 		);
 	}
+	
+	function getStationPrices($stationId) {
+		return $this->find('all', 
+			array(
+				'conditions' => array('station_id' => $stationId)
+			)
+		);
+	}
 }
 ?>
