@@ -90,8 +90,8 @@ class InvoiceItemsController extends AppController {
 			if (!empty($this->data)) {
 				$user = $this->Auth->user();
 				$addMore = $this->data['InvoiceItem']['add_more'];
-				if($this->Inventory->hasEnoughInventory($stationId, $this->data['InvoiceItem']['product_id'], $this->data['InvoiceItem']['quantity'])) {
-					if ($this->Inventory->sellProduct($this->data, $station, $user)) {
+				if($this->Inventory->hasEnoughInventory($this->data, $stationId)) {
+					if ($this->Inventory->sellProduct($this->data, $stationId, $user)) {
 						if($this->InvoiceItem->saveInvoiceItem($this->data, $invoice)) {
 							$this->Session->setFlash(__('Sale has been recorded', true));
 							if($addMore) {
@@ -110,6 +110,7 @@ class InvoiceItemsController extends AppController {
 				else {
 					$this->Session->setFlash(__('Station does not have enough inventory.', true));
 				}
+				$this->data = array();
 			}
 			$products = $this->InvoiceItem->Product->find('list');
 			$this->set(compact('products'));

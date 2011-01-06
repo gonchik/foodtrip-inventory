@@ -37,12 +37,10 @@ $this->Js->buffer("
 	function updateCost() {
 		var productId = $('#SupplierProductProductId').val();
 		var submit = $('div.submit > input[type=submit]');
-		submit.attr('disabled', true);
 		$.ajax({
 			url: '". $this->Html->url(array('action'=>'getDefaultProductCost')) ."' + '/' + productId,
 			success: function(msg) {
 				setCost(parseFloat(msg));
-				submit.attr('disabled', false);
 			}
 		});
 	}

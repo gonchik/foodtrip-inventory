@@ -37,13 +37,15 @@ CREATE TABLE `configurations` (
   `updated` datetime NOT NULL,
   `name` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `configurations`
 --
 
 /*!40000 ALTER TABLE `configurations` DISABLE KEYS */;
+INSERT INTO `configurations` (`id`,`value`,`defaultValue`,`isVisible`,`isRequired`,`type`,`created`,`updated`,`name`) VALUES 
+ (1,'1.3','1.3',1,1,'PERCENT','2010-10-13 06:05:17','2010-10-13 06:05:17','products.default.markup.rate');
 /*!40000 ALTER TABLE `configurations` ENABLE KEYS */;
 
 
@@ -166,26 +168,54 @@ CREATE TABLE `products` (
 
 
 --
--- Definition of table `products_suppliers`
+-- Definition of table `purchase_order_request_items`
 --
 
-DROP TABLE IF EXISTS `products_suppliers`;
-CREATE TABLE `products_suppliers` (
+DROP TABLE IF EXISTS `purchase_order_request_items`;
+CREATE TABLE `purchase_order_request_items` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `supplier_id` int(10) unsigned NOT NULL,
   `product_id` int(10) unsigned NOT NULL,
-  `price` decimal(10,0) NOT NULL,
+  `purchase_order_request_id` int(10) unsigned DEFAULT NULL,
+  `quantity` int(10) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `updated` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `products_suppliers`
+-- Dumping data for table `purchase_order_request_items`
 --
 
-/*!40000 ALTER TABLE `products_suppliers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `products_suppliers` ENABLE KEYS */;
+/*!40000 ALTER TABLE `purchase_order_request_items` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase_order_request_items` ENABLE KEYS */;
+
+
+--
+-- Definition of table `purchase_order_requests`
+--
+
+DROP TABLE IF EXISTS `purchase_order_requests`;
+CREATE TABLE `purchase_order_requests` (
+  `id` int(10) unsigned NOT NULL,
+  `supplier_id` int(10) unsigned DEFAULT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `approvedBy` int(10) unsigned DEFAULT NULL,
+  `cancelledBy` int(10) unsigned DEFAULT NULL,
+  `dateCancelled` datetime DEFAULT NULL,
+  `dateApproved` datetime DEFAULT NULL,
+  `remarks` text NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  `code` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `purchase_order_requests`
+--
+
+/*!40000 ALTER TABLE `purchase_order_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchase_order_requests` ENABLE KEYS */;
 
 
 --
@@ -208,6 +238,29 @@ CREATE TABLE `station_assignments` (
 
 /*!40000 ALTER TABLE `station_assignments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `station_assignments` ENABLE KEYS */;
+
+
+--
+-- Definition of table `station_prices`
+--
+
+DROP TABLE IF EXISTS `station_prices`;
+CREATE TABLE `station_prices` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `station_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `price` decimal(12,2) NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `station_prices`
+--
+
+/*!40000 ALTER TABLE `station_prices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `station_prices` ENABLE KEYS */;
 
 
 --
@@ -255,6 +308,29 @@ CREATE TABLE `stations_users` (
 
 
 --
+-- Definition of table `supplier_products`
+--
+
+DROP TABLE IF EXISTS `supplier_products`;
+CREATE TABLE `supplier_products` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `supplier_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
+  `cost` decimal(12,2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `supplier_products`
+--
+
+/*!40000 ALTER TABLE `supplier_products` DISABLE KEYS */;
+/*!40000 ALTER TABLE `supplier_products` ENABLE KEYS */;
+
+
+--
 -- Definition of table `suppliers`
 --
 
@@ -294,6 +370,8 @@ CREATE TABLE `transactions` (
   `created` datetime NOT NULL,
   `updated` datetime NOT NULL,
   `transaction_number` text NOT NULL,
+  `station_id` int(10) unsigned NOT NULL,
+  `product_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

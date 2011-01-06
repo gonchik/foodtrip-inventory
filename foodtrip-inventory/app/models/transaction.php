@@ -262,7 +262,8 @@ class Transaction extends AppModel {
 		$conditions = array(
 			'Transaction.transaction_type' => 'SALES',
 			'Transaction.created >=' => $startDate,
-			'Transaction.created <=' => $endDate
+			'Transaction.created <=' => $endDate,
+//			'Transaction.product_id ' => 'StationPrice.product_id'
 		);
 		if($stationId != '') {
 			$conditions = array_merge($conditions, array('Transaction.station_id' => $stationId));
@@ -299,7 +300,8 @@ class Transaction extends AppModel {
 						),
 						'StationPrice' => array(
 							'fields' => array(
-								'StationPrice.price'
+								'StationPrice.price',
+//								'StationPrice.product_id'
 							)
 						)
 					),

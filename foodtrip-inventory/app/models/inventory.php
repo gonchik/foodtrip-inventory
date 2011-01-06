@@ -145,11 +145,12 @@ class Inventory extends AppModel {
 		return false;
 	} 
 	
-	function getAvailableInventoriesOrderedByMostRecent($stationId) {
+	function getAvailableInventoriesOrderedByMostRecent($stationId, $productId) {
 		return $this->find('all', 
 			array(
 				'conditions'=>array(
 					'station_id'=>$stationId,
+					'product_id'=>$productId,
 					'quantity > '=>0,
 				),
 				'order'=>array(
@@ -172,19 +173,21 @@ class Inventory extends AppModel {
 		return $totalQuantity > 0;
 	}
 	
-	function hasEnoughInventory($stationId, $productId, $requiredQuantity) {
+	function hasEnoughInventory($data, $stationId) {
+		$productId = $data['InvoiceItem']['product_id'];
+		$requiredQuantity = $data['InvoiceItem']['quantity'];
 		$totalQuantity = $this->getTotalInventoryCount($stationId, $productId);
 		return $totalQuantity >= $requiredQuantity;
 	}
 	
-	function sellProduct($data, $station, $user) {
+	function sellProduct($data, $stationId, $user) {
 		//check first if there are available inventory
 		
 		//fetch (unused) inventories
 		//loop until amount has been covered
 		//remove inventory
 		//record transaction
-		$inventories = $this->getAvailableInventoriesOrderedByMostRecent($station['Station']['id']);
+		$inventories = $this->getAvailableInventoriesOrderedByMostRecent($stationId, $data['InvoiceItem']['product_id']);
 		if(empty($inventories)) {
 			return false;
 		}
